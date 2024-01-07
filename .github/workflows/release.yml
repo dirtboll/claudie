@@ -50,7 +50,7 @@ jobs:
       - name: Edit autoscaler-adapter image tag in the manifest
         run: |
           TAG=${RELEASE}
-          sed -i "s/image: ghcr.io\/berops\/claudie\/autoscaler-adapter/&:$TAG/" services/kuber/templates/cluster-autoscaler.goyaml
+          sed -i "s/image: ghcr.io\/dirtboll\/claudie\/autoscaler-adapter/&:$TAG/" services/kuber/templates/cluster-autoscaler.goyaml
           # Remove autoscaler-adapter tag from claudie kustomization.yaml
           awk '/autoscaler-adapter/{getline; next} 1' manifests/claudie/kustomization.yaml > temp.yaml && mv temp.yaml manifests/claudie/kustomization.yaml
 
@@ -60,7 +60,7 @@ jobs:
           for SERVICE in "${ARR[@]}"
           do
             echo "-----Building $SERVICE-----"
-            IMGTAG="ghcr.io/berops/claudie/$SERVICE:${RELEASE}" 
+            IMGTAG="ghcr.io/dirtboll/claudie/$SERVICE:${RELEASE}" 
             DOCKER_BUILDKIT=1 docker buildx build --push --platform linux/amd64,linux/arm64 --tag $IMGTAG -f ./services/$SERVICE/Dockerfile . 
           done
 
@@ -70,7 +70,7 @@ jobs:
           ARR=( ${{ env.SERVICES }} )
           for SERVICE in "${ARR[@]}"
           do
-            kustomize edit set image ghcr.io/berops/claudie/$SERVICE:${RELEASE}
+            kustomize edit set image ghcr.io/dirtboll/claudie/$SERVICE:${RELEASE}
           done
 
       - name: Create claudie.yaml file from manifests
@@ -115,21 +115,3 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref }}
           file: claudie_checksum.txt
-
-  #--------------------------------------------------------------------------------------------------
-  create-issue:
-    name: Create Claudie upgrade issue in infra
-    # the action has been tested only on ubuntu-latest https://github.com/marketplace/actions/create-github-issue#usage
-    runs-on: ubuntu-latest
-    needs: build-and-publish
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dacbd/create-issue-action@v1
-        with:
-          token: ${{ secrets.GH_ISSUES_TOKEN }}
-          org: berops
-          repo: infra
-          title: Upgrade Claudie version on mgmt cluster
-          labels: chore
-          body: |
-            The Claudie version on our `mgmt` cluster should be upgraded due to new release.
