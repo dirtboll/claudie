@@ -187,6 +187,7 @@ func (ds *Manifest) CreateNodepools(pools []string, isControl bool) ([]*pb.NodeP
 						Provider:         provider,
 						AutoscalerConfig: autoscalerConf,
 						MachineSpec:      machineSpec,
+						Spot:             nodePool.Spot,
 					},
 				},
 			})

@@ -142,6 +142,10 @@ type DynamicNodePool struct {
 	Taints []k8sV1.Taint `validate:"omitempty" yaml:"taints" json:"taints"`
 	// MachineSpec further describe the properties of the selected server type.
 	MachineSpec *MachineSpec `validate:"omitempty" yaml:"machineSpec,omitempty" json:"machineSpec,omitempty"`
+	// Whether the node is a spot instance or not. Spot instance can be terminated by cloud provider at any given time.
+	// Defaults to false.
+	// +optional
+	Spot bool `validate:"omitempty" yaml:"spot" json:"spot"`
 }
 
 // Autoscaler configuration on per nodepool basis. Defines the number of nodes, autoscaler will scale up or down specific nodepool.

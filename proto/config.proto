@@ -220,6 +220,8 @@ message DynamicNodePool {
   AutoscalerConf autoscalerConfig = 9;
   // MachineSpec configuration. (optional)
   MachineSpec machineSpec = 10;
+  // Spot configuarion. (optional)
+  bool spot = 11;
 }
 
 // StaticNodePool represents static node pool used in cluster.
