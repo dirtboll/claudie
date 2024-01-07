@@ -284,12 +284,19 @@ spec:
                           description: Type of the machines in the nodepool. Currently,
                             only AMD64 machines are supported.
                           type: string
+                        spot:
+                          description: Whether the node is a spot instance or not.
+                            Spot instance can be terminated by cloud provider at any
+                            given time. Defaults to false.
+                          type: boolean
                         storageDiskSize:
                           description: Size of the storage disk on the nodes in the
                             nodepool in GB. The OS disk is created automatically with
                             predefined size of 100GB for kubernetes nodes and 50GB
-                            for Loadbalancer nodes.
-                          format: int64
+                            for Loadbalancer nodes. The value must be either -1 (no
+                            disk is created), or >= 50. If no value is specified,
+                            50 is used.
+                          format: int32
                           type: integer
                         taints:
                           description: User defined taints for this nodepool.
