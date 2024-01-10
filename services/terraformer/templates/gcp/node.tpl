@@ -18,9 +18,9 @@ resource "google_compute_instance" "{{ $node.Name }}" {
   description   = "Managed by Claudie for cluster {{ $clusterName }}-{{ $clusterHash }}"
   allow_stopping_for_update = true
 
-  provisioning_model        = "{{- if $nodepool.NodePool.Spot -}}SPOT{{- else -}}STANDARD{{- end -}}"
-  preemptible               = {{- if $nodepool.NodePool.Spot -}}true{{- else -}}false{{- end -}}
-  automatic_restart         = {{- if $nodepool.NodePool.Spot -}}false{{- else -}}true{{- end -}}
+  provisioning_model        = "{{ if $nodepool.NodePool.Spot }}SPOT{{ else }}STANDARD{{ end }}"
+  preemptible               = {{ if $nodepool.NodePool.Spot }}true{{ else }}false{{ end }}
+  automatic_restart         = {{ if $nodepool.NodePool.Spot }}false{{ else }}true{{ end }}
 
 
   network_interface {
