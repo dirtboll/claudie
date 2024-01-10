@@ -47,7 +47,7 @@ spec:
       containers:
         - name: autoscaler-adapter
           imagePullPolicy: IfNotPresent
-          image: ghcr.io/berops/claudie/autoscaler-adapter
+          image: ghcr.io/dirtboll/claudie/autoscaler-adapter
           securityContext:
             allowPrivilegeEscalation: false
             privileged: false
